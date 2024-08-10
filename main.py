@@ -90,10 +90,10 @@ def printlog(message, end=""):
 async def poster(client: pyrogram.Client, message: Message):
     printlog(message=f"Message received from {message.from_user.id}!")
     if message.caption:
-        printlog(message=f"Sending Post to channel...")
+        printlog(message=f"i am sending above Post to channel...")
         message_sent = await client.send_photo(
             chat_id=channel_id,
-            caption=message.caption.markdown + "\n\nTotal Registrations: Please wait...",
+            caption=message.caption.markdown + "\n\nTotal Registrations: I am counting it, Please wait...",
             photo=message.photo.file_id,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -111,7 +111,7 @@ async def poster(client: pyrogram.Client, message: Message):
         database.set_post_id(post_id=message_sent.id)
 
         printlog(message=f"Post sent to channel!")
-        await message.reply(text="Sent!")
+        await message.reply(text="Yey, above post is now sent to channel :D")
 
     else:
 
@@ -124,7 +124,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
         printlog(message=f"Collecting Codes...")
         await message.reply(
-            text=f"Starting the giveaway in {root['time']['total']/3600} hours, To abort, send /abort"
+            text=f"i am starting the giveaway in {root['time']['total']/3600} hours, To abort or dismiss this giveaway, send /abort"
         )
 
         printlog(message="Configuring Variables...")
@@ -135,7 +135,7 @@ async def poster(client: pyrogram.Client, message: Message):
         else:
             codes = root["codes"]
 
-        printlog(message="Starting Timer...")
+        printlog(message="i am starting the Timer...")
         zfill_num = len(str(object=root["time"]["total"]))
         total = root["time"]["total"]
 
@@ -150,7 +150,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
             await asyncio.sleep(delay=1)
 
-        printlog(message="\nEnding Giveaway...")
+        printlog(message="\nI am Ending this Giveaway...")
         try:
             await client.edit_message_reply_markup(
                 chat_id=channel_id, message_id=root["post_id"], reply_markup=None
@@ -158,7 +158,7 @@ async def poster(client: pyrogram.Client, message: Message):
         except:
             pass
 
-        printlog(message="Choosing Winners...")
+        printlog(message="Choosing Winners, wait a bit...")
         for _ in range(len(codes)):
             while True:
                 try:
@@ -172,13 +172,13 @@ async def poster(client: pyrogram.Client, message: Message):
 
             database.mark_chosen(user=user.id)
 
-        printlog(message="Sending Messages...")
+        printlog(message="Sending Messages, hold up a sec...")
         for i in range(len(codes)):
             user = await client.get_users(user_ids=root["chosen"][i])
 
             await client.send_message(
                 chat_id=group_id,
-                text=f"{user.mention()}:[{root['chosen'][i]}](tg://user?id={root['chosen'][i]}) click on the button below to receive your present! You have {varfile.auto_abort//3600} hours to do so :D",
+                text=f"{user.mention()}:[{root['chosen'][i]}](tg://user?id={root['chosen'][i]}) Yey, you won a present in this giveaway! You have {varfile.auto_abort//3600} hours to redeem ya code :D",
                 reply_markup=InlineKeyboardMarkup(
                     inline_keyboard=[
                         [
@@ -199,9 +199,9 @@ async def poster(client: pyrogram.Client, message: Message):
         users = await client.get_users(user_ids=root["chosen"])
         msg = await client.send_message(
             chat_id=group_id,
-            text="Giveaway has ended! List of winners: \n"
+            text="And giveaway ends with this! Congrats to all in the list below: \n"
             + "\n".join([f"{x.mention()}:{x.id}" for x in users])
-            + "\n\nBot by @XelteXynos",
+            + "\n\nBot by @Maybesahil, OG credits: @Xelxen",
         )
         await client.pin_chat_message(chat_id=group_id, message_id=msg.id)
 
