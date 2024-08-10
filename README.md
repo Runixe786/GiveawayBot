@@ -7,6 +7,7 @@ Manage giveaways on Telegram using a simple pyrogram script :D
 1. **Easy Registration**: The bot can manage and handle the registrations using a simple inline button.
 2. **Time Limit**: Each giveaway can have a custom time limit.
 3. **Redeem Feature**: Winners can redeem their prizes in their DM.
+4. **Redeem time limit**: Each giveaway can have custom time limit to redeem prizes through bot's DM (equivalent to auto-abort time). 
 4. **Winner Selection**: The bot randomly selects winners from the participants.
 5. **Winner Announcements**: The bot sends a message to the group announcing the winners.
 6. **Logging**: The bot logs important events like the start of the timer and the sending of the winner list.
@@ -30,10 +31,10 @@ Manage giveaways on Telegram using a simple pyrogram script :D
 
 ## Usage
 
-1. Configure varfile.py
+1. Configure varfile.py with values as asked inside the file. 
 2. Run the script: `python main.py`
 3. Add the bot to the groupchat of the channel and the channel and give it messaging permissions
-4. Use `/settime 6` to set giveaway time to 6 hours but you can configure it with any number you want
+4. Use `/settime 24` to set giveaway time to 24 hours but you can configure it with any number you want
 5. Send the bot a giveaway post
 6. Send the bot giveaways codes (one code per line)
 
