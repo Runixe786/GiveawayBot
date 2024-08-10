@@ -1,6 +1,6 @@
 # Giveaway Management Bot
-# Made by @xeltexynos
-# Version: 3.0.0
+# Made by @MaybeSahil
+# Version: 4.0.0
 
 print("Importing Libraries...")
 import pyrogram
@@ -124,7 +124,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
         printlog(message=f"Collecting Codes...")
         await message.reply(
-            text=f"i am starting the giveaway in {root['time']['total']/3600} hours, To abort or dismiss this giveaway, send /abort"
+            text=f"i have started the giveaway for next {root['time']['total']/3600} hours, To abort or dismiss this giveaway, send /abort"
         )
 
         printlog(message="Configuring Variables...")
@@ -216,7 +216,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
         printlog(message="\nCollecting Unused Codes...")
         await message.reply(
-            text="Unused Codes:\n\n"
+            text="Here's the list of Unused Codes:\n\n"
             + "\n".join([x for x in root["codes"] if x not in root["used_codes"]])
         )
 
@@ -267,7 +267,7 @@ async def start(client: pyrogram.Client, message: Message):
 
             printlog(message=f"User {str(object=message.from_user.id)} has registered!")
 
-            await message.reply(text="You're registered!")
+            await message.reply(text="You're participating now, good luck for winning this one :D")
 
     elif message.command[1] == "redeem":
 
@@ -300,7 +300,7 @@ async def start(client: pyrogram.Client, message: Message):
 async def cleardata(_, message: Message):
     printlog(message=f"Clearing data on command of {message.from_user.id}...")
     database.clear_db()
-    await message.reply(text="Data cleared!")
+    await message.reply(text="Data is now cleared!")
     printlog(message=f"Data cleared on command of {message.from_user.id}")
 
 
@@ -328,7 +328,7 @@ async def unused(_, message: Message):
     & filters.private
 )
 async def abort(_, message: Message):
-    await message.reply(text="Aborted!")
+    await message.reply(text="Aborted, giveaway is dismissed now!")
     printlog(message=f"Bot has been aborted on command of {message.from_user.id}")
     quit()
 
@@ -342,7 +342,7 @@ async def stats(_, message: Message):
     printlog(message=f"Sending stats to {message.from_user.id}...")
 
     await message.reply(
-        text=f"Time: {root['time']['left']}/{root['time']['total']}\n\nUsers: {len(root['users'])}\n\nCodes: {len(root['codes'])}\n\nChosen: {len(root['chosen'])}\n\nBanned: {len(root['banned'])}\n\nUsed Codes: {len(root['used_codes'])}\n\nPost ID: {root['post_id']}"
+        text=f"Time left: {root['time']['left']}/{root['time']['total']}\n\nUsers registered so far: {len(root['users'])}\n\nTotal Codes: {len(root['codes'])}\n\nChosen: {len(root['chosen'])}\n\nUsers Banned: {len(root['banned'])}\n\nCodes Redeemed: {len(root['used_codes'])}\n\nPost ID: {root['post_id']}"
     )
 
     printlog(message=f"Stats sent to {message.from_user.id}")
@@ -361,9 +361,9 @@ async def settime(_, message: Message):
 
         printlog(f"Time set to {root['time']['total']/3600} hours!")
 
-        await message.reply("Time set!")
+        await message.reply("I have set the timer :D")
     except:
-        await message.reply("Invalid Time!")
+        await message.reply("Oops, Invalid Time!")
 
 
 @app.on_message(
