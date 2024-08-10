@@ -1,6 +1,6 @@
 # Giveaway Management Bot
-# Made by @MaybeSahil
-# Version: 4.0.0
+# Made by @xeltexynos
+# Version: 3.0.0
 
 print("Importing Libraries...")
 import pyrogram
@@ -36,6 +36,7 @@ print("Initializing Database...")
 if not os.path.exists(varfile.database):
     database.create_db()
 
+
 class Root:
     def __init__(self, database: database):
         self.database = database
@@ -46,6 +47,7 @@ class Root:
         return self.data[key]
 
 root = Root(database=database)
+
 
 
 def preliminaries():
@@ -93,7 +95,8 @@ async def poster(client: pyrogram.Client, message: Message):
         printlog(message=f"i am sending above Post to channel...")
         message_sent = await client.send_photo(
             chat_id=channel_id,
-            caption=message.caption.markdown + "\n\nTotal Registrations: I am counting it, Please wait...",
+            caption=message.caption.markdown
+            + "\n\nTotal Registrations: I am counting it, Please wait...",
             photo=message.photo.file_id,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -195,7 +198,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
         database.clear_post_id()
 
-        printlog(message="Sending Winner List...")
+        printlog(message="Sending Winners List...")
         users = await client.get_users(user_ids=root["chosen"])
         msg = await client.send_message(
             chat_id=group_id,
@@ -207,7 +210,7 @@ async def poster(client: pyrogram.Client, message: Message):
 
         printlog(message="Starting Timer...\n")
         zfill_num = len(str(object=varfile.auto_abort))
-        for i in range(varfile.auto_abort):
+        for i in range(int(varfile.auto_abort)):
             print(
                 "Time left: " + str(object=varfile.auto_abort - i).zfill(zfill_num),
                 end="\r",
@@ -247,7 +250,9 @@ async def start(client: pyrogram.Client, message: Message):
             database.add_user(user=message.from_user.id)
 
             if len(root["users"]) % 10 == 0:
-                msg = await client.get_messages(chat_id=channel_id, message_ids=root["post_id"])
+                msg = await client.get_messages(
+                    chat_id=channel_id, message_ids=root["post_id"]
+                )
 
                 await client.edit_message_caption(
                     chat_id=channel_id,
@@ -265,9 +270,15 @@ async def start(client: pyrogram.Client, message: Message):
                     ),
                 )
 
+                if varfile.group_stats:
+                    await client.send_message(
+                        chat_id=group_id,
+                        text=f"{len(root['users'])} users have registered!\n\n[Click here if you haven't registered yet!](https://t.me/{varfile.bot_username}?start=register)",
+                    )
+
             printlog(message=f"User {str(object=message.from_user.id)} has registered!")
 
-            await message.reply(text="You're participating now, good luck for winning this one :D")
+            await message.reply(text="You're participating now, good luck for winning this one. Dont forget to join @DroidDIscussion to claim the codes")
 
     elif message.command[1] == "redeem":
 
@@ -278,13 +289,15 @@ async def start(client: pyrogram.Client, message: Message):
 
         if code not in root["used_codes"]:
             await message.reply(
-                text="You've won the giveaway! Here's your redeem code: " + code
+                text="Hurray, You've won the giveaway! Here's your redeem code: " + code
             )
 
             database.mark_used(code=code)
 
             try:
-                printlog(message=f"{code} has been redeemed by {message.from_user.first_name}")
+                printlog(
+                    message=f"{code} has been redeemed by {message.from_user.first_name}"
+                )
             except:
                 printlog(message=f"{code} has been redeemed by {message.from_user.id}")
 
@@ -300,7 +313,7 @@ async def start(client: pyrogram.Client, message: Message):
 async def cleardata(_, message: Message):
     printlog(message=f"Clearing data on command of {message.from_user.id}...")
     database.clear_db()
-    await message.reply(text="Data is now cleared!")
+    await message.reply(text="Thanos snaps, your database is now vanished")
     printlog(message=f"Data cleared on command of {message.from_user.id}")
 
 
@@ -342,7 +355,7 @@ async def stats(_, message: Message):
     printlog(message=f"Sending stats to {message.from_user.id}...")
 
     await message.reply(
-        text=f"Time left: {root['time']['left']}/{root['time']['total']}\n\nUsers registered so far: {len(root['users'])}\n\nTotal Codes: {len(root['codes'])}\n\nChosen: {len(root['chosen'])}\n\nUsers Banned: {len(root['banned'])}\n\nCodes Redeemed: {len(root['used_codes'])}\n\nPost ID: {root['post_id']}"
+        text=f"Time left: {root['time']['left']}/{root['time']['total']}\n\nUsers registered so far: {len(root['users'])}\n\nTotal Codes: {len(root['codes'])}\n\nWinners Chosen: {len(root['chosen'])}\n\nUsers Banned: {len(root['banned'])}\n\nCodes Redeemed: {len(root['used_codes'])}\n\nPost ID: {root['post_id']}"
     )
 
     printlog(message=f"Stats sent to {message.from_user.id}")
