@@ -1,5 +1,5 @@
 # Giveaway Management Bot
-# Made by @xeltexynos
+# Made by @MaybeSahil
 # Version: 3.0.0
 
 print("Importing Libraries...")
