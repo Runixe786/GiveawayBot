@@ -289,7 +289,7 @@ async def start(client: pyrogram.Client, message: Message):
 
         if code not in root["used_codes"]:
             await message.reply(
-                text="Hurray, You've won the giveaway! Here's your redeem code: " + code
+                text="Hurray, You've won the giveaway! Kindly rate the app 5 stars on play store and write a nice review also. Here's your redeem code: " + code
             )
 
             database.mark_used(code=code)
