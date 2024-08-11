@@ -257,7 +257,7 @@ async def start(client: pyrogram.Client, message: Message):
                 await client.edit_message_caption(
                     chat_id=channel_id,
                     message_id=root["post_id"],
-                    caption=f"{"\n".join(msg.caption.markdown.split("\n")[:-2])}\n\nTotal Registrations: {len(root['users'])}",
+                    caption=f"{'\n'.join(msg.caption.markdown.split('\n')[:-2])}\n\nTotal Registrations: {len(root['users'])}",
                     reply_markup=InlineKeyboardMarkup(
                         inline_keyboard=[
                             [
